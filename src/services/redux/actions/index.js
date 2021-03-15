@@ -11,7 +11,9 @@ import {
  * @param {string} errorMessage
  * @return {Object}
  */
-export function onApiCallFailure(errorMessage) {
+export function onApiCallFailure(
+    errorMessage=process.env.DEFAULT_API_ERROR_MESSAGE,
+) {
   return {
     type: ON_API_CALL_FAILURE,
     errorMessage,

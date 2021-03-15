@@ -1,6 +1,11 @@
 import { starWarsApiClient } from '../../setup/api';
 import { ERROR_STATUS } from '../api/constants';
-import { setIsLoading } from './actions';
+import {
+  onApiCallFailure,
+  onApiCallSuccess,
+  setIsLoading,
+  setStarWarsMovieList,
+} from './actions';
 
 
 /** Retrieves all star wars films and sets them to state
@@ -13,13 +18,14 @@ export function retrieveMovieDetails() {
     try {
       const { response, status } = starWarsApiClient.getAllStarWarsFilms();
       if (status === ERROR_STATUS) {
-        dispatch(apiFailure());
+        dispatch(onApiCallFailure());
         return;
       }
 
-      dispatch('success occurred', response);
+      dispatch(setStarWarsMovieList(response));
+      dispatch(onApiCallSuccess());
     } catch (error) {
-      dispatch('error occured', error);
+      dispatch(onApiCallFailure());
     }
 
     dispatch(setIsLoading(false));
