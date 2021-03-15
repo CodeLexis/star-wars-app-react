@@ -1,23 +1,48 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Table from './components/Table';
 
+/** App
+ * @return {node}
+ */
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="app-container">
+      <img
+        alt="star-wars-logo"
+        id="star-wars-logo"
+        src="https://img.icons8.com/ios/256/FFE81F/star-wars.png"
+      />
+
+      <Table
+        data={[
+          {
+            'name': 'Tomisin',
+            'age': 18,
+            'phone': '07065121509',
+          },
+          {
+            'name': 'Tomisin',
+            'age': 18,
+            'phone': '07065121509',
+          },
+          {
+            'name': 'Tomisin',
+            'age': 18,
+            'phone': '07065121509',
+          },
+          {
+            'name': 'Tomisin',
+            'age': 18,
+            'phone': '07065121509',
+          },
+          {
+            'name': 'Tomisin',
+            'age': 18,
+            'phone': '07065121509',
+          },
+        ]}
+      />
     </div>
   );
 }
