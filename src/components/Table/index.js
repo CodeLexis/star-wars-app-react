@@ -41,7 +41,7 @@ export default function Table({ data, fields }) {
   const [tableData, setTableData] = useState([]);
 
   const tableHeaders = useMemo(
-      () => fields || Object.keys(data[0]),
+      () => fields || Object.keys(data && data[0] ? data[0] : {}),
       [data, fields],
   );
 

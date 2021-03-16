@@ -1,6 +1,7 @@
 import {
   ON_API_CALL_FAILURE,
   ON_API_CALL_SUCCESS,
+  SET_CURRENT_STAR_WARS_MOVIE,
   SET_IS_LOADING,
   SET_STAR_WARS_MOVIE_LIST,
 } from '../action-types';
@@ -11,6 +12,7 @@ const initialState = {
   didErrorOccurWhileFetching: true,
   isLoading: false,
   starWarsMovies: null,
+  urlContent: null,
 };
 
 
@@ -25,28 +27,30 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         didErrorOccurWhileFetching: true,
-        errorMessage: action.errorMessage,
+        errorMessage: action.payload,
       };
     case ON_API_CALL_SUCCESS:
       return {
         ...state,
-        successMessage: action.successMessage,
+        successMessage: action.payload,
       };
     case SET_CURRENT_STAR_WARS_MOVIE:
       return {
         ...state,
-        currentStarWarsMovie: action.data,
-      };
-    case SET_STAR_WARS_MOVIE_LIST:
-      return {
-        ...state,
-        starWarsMovies: action.data,
+        currentStarWarsMovie: state.starWarsMovies.find(
+            ({episode_id: episodeId}) => episodeId == action.payload,
+        ),
       };
     case SET_IS_LOADING:
       return {
         ...state,
         didErrorOccurWhileFetching: false,
-        isLoading: action.isLoading,
+        isLoading: action.payload,
+      };
+    case SET_STAR_WARS_MOVIE_LIST:
+      return {
+        ...state,
+        starWarsMovies: action.payload,
       };
 
     default:

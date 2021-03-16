@@ -14,4 +14,6 @@ export const HTTP_CREATED = 201;
 export const HTTP_ACCEPTED = 202;
 export const HTTP_CONFLICT = 409;
 
-export const DEFAULT_API_ERROR_MESSAGE = 'Service unavailable at this time, try again later.';
+export const DEFAULT_API_ERROR_MESSAGE = (
+  'Service unavailable at this time, try again later.'
+);

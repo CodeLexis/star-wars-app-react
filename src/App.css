@@ -11,3 +11,26 @@
   margin: 0 auto;
   /* justify-self: center; */
 }
+
+.opening-scroll {
+  height: 20rem;
+  overflow-y: scroll;
+}
+
+.opening-scroll__text {
+  color: var(--yellow);
+  font-weight: 900;
+}
+
+.opening-scroll__h1 {
+  font-size: var(--font-size-xl);
+  font-family: 'Source Sans Pro';
+  line-height: 4rem;
+  margin-top: 0rem;
+  margin-bottom: 4.5rem;
+  text-transform: uppercase;
+}
+
+.opening-scroll__heading {
+  text-align: center;
+}

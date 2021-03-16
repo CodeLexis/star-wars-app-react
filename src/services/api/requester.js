@@ -50,21 +50,23 @@ export default class Requester {
    * @return {Object}
    */
   async _makeHttpRequest(params) {
-    // check if auth token has expired, refresh token if necessary
     const {
       url, method, headers={'Content-Type': 'application/json'},
       args, body, auth: isAuthRequired,
     } = params;
-    let { authToken } = await retrieveAuthToken();
-    const hasAuthTokenExpired = await isAuthTokenExpired();
 
-    console.log('HAS AUTH TOEKN EXPIRED:', hasAuthTokenExpired);
+    let authToken = null;
 
-    if (hasAuthTokenExpired === true) {
-      await deleteAuthToken();
-      await refreshAuthToken();
-      const authTokenObj = await retrieveAuthToken();
-      authToken = authTokenObj.authToken;
+    // check if auth token has expired, refresh token if necessary
+    if (isAuthRequired) {
+      const hasAuthTokenExpired = isAuthTokenExpired();
+
+      if (hasAuthTokenExpired === true) {
+        deleteAuthToken();
+        await refreshAuthToken();
+        const authTokenObj = retrieveAuthToken();
+        authToken = authTokenObj.authToken;
+      }
     }
 
     if (authToken && !headers['Authorization']) {
@@ -74,23 +76,6 @@ export default class Requester {
     if (isAuthRequired === false) {
       delete headers['Authorization'];
     }
-
-    headers['Device-UID'] = JSON.parse(
-        localStorage.getItem('DEVICE_UID'),
-    );
-
-    console.log({
-      url,
-      method,
-      headers,
-      params: args,
-      data: body,
-      mode: 'no-cors',
-      proxy: {
-        host: '172.16.10.20',
-        port: 8080,
-      },
-    });
 
     return axios({
       url,

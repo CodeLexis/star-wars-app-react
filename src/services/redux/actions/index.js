@@ -4,6 +4,8 @@ import {
   SET_CURRENT_STAR_WARS_MOVIE,
   SET_IS_LOADING,
   SET_STAR_WARS_MOVIE_LIST,
+  SET_URL_RESOURCE_CONTENT,
+  SET_URL_RESOURCE_IS_LOADING,
 } from '../action-types';
 
 
@@ -16,7 +18,7 @@ export function onApiCallFailure(
 ) {
   return {
     type: ON_API_CALL_FAILURE,
-    errorMessage,
+    payload: errorMessage,
   };
 }
 
@@ -27,18 +29,18 @@ export function onApiCallFailure(
 export function onApiCallSuccess(successMessage) {
   return {
     type: ON_API_CALL_SUCCESS,
-    successMessage,
+    payload: successMessage,
   };
 }
 
 /** Sets the current star wars movie
- * @param {Object} movie
+ * @param {string} episodeId
  * @return {Object}
  */
-export function setCurrentStarWarsMovie(movie) {
+export function setCurrentStarWarsMovie(episodeId) {
   return {
     type: SET_CURRENT_STAR_WARS_MOVIE,
-    movie,
+    payload: episodeId,
   };
 }
 
@@ -49,17 +51,45 @@ export function setCurrentStarWarsMovie(movie) {
 export function setStarWarsMovieList(movieList) {
   return {
     type: SET_STAR_WARS_MOVIE_LIST,
-    movieList,
+    payload: movieList,
+  };
+}
+
+/** Sets the content of a URL resource
+ * @param {any} content
+ * @param {string} url
+ * @return {Object}
+ */
+export function setUrlResourceContent(content, url) {
+  return {
+    type: SET_URL_RESOURCE_CONTENT,
+    payload: content,
+    url,
+  };
+}
+
+/** Sets isLoading of a URL resource
+ * @param {boolean} isLoading
+ * @param {string} url
+ * @return {Object}
+ */
+export function setUrlResourceIsLoading(isLoading, url) {
+  return {
+    type: SET_URL_RESOURCE_IS_LOADING,
+    payload: isLoading,
+    url,
   };
 }
 
 /** Sets isLoading on the global application state
  * @param {boolean} isLoading
+ * @param {string} key
  * @return {Object}
  */
-export function setIsLoading(isLoading) {
+export function setIsLoading(isLoading, key) {
   return {
     type: SET_IS_LOADING,
-    isLoading,
+    payload: isLoading,
+    key,
   };
 }

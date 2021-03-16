@@ -1,50 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import PropTypes from 'prop-types';
+
 import './App.css';
-import Table from './components/Table';
+
+import Home from './pages/Home';
+import { retrieveMovieDetails } from './services/redux/thunks';
+
 
 /** App
  * @return {node}
  */
-function App() {
-  return (
-    <div id="app-container">
-      <img
-        alt="star-wars-logo"
-        id="star-wars-logo"
-        src="https://img.icons8.com/ios/256/FFE81F/star-wars.png"
-      />
+function App({retrieveMovieDetails}) {
+  useEffect(() => {
+    retrieveMovieDetails();
+  }, []);
 
-      <Table
-        data={[
-          {
-            'name': 'Tomisin',
-            'age': 18,
-            'phone': '07065121509',
-          },
-          {
-            'name': 'Tomisin',
-            'age': 18,
-            'phone': '07065121509',
-          },
-          {
-            'name': 'Tomisin',
-            'age': 18,
-            'phone': '07065121509',
-          },
-          {
-            'name': 'Tomisin',
-            'age': 18,
-            'phone': '07065121509',
-          },
-          {
-            'name': 'Tomisin',
-            'age': 18,
-            'phone': '07065121509',
-          },
-        ]}
-      />
-    </div>
-  );
+  return <Home />;
 }
 
-export default App;
+/** Maps the redux-dispatchable-actions to props
+ * @param {function} dispatch
+ * @return {Object}
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    retrieveMovieDetails: () => dispatch(retrieveMovieDetails()),
+  };
+}
+
+App.propTypes = {
+  retrieveMovieDetails: PropTypes.func,
+};
+
+export default connect(null, mapDispatchToProps)(App);
+

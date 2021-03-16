@@ -1,6 +1,9 @@
 :root {
   --black: #0E1111;
   --yellow: #FFE81F;
+  --font-size-md: 2rem;
+  --font-size-lg: 3rem;
+  --font-size-xl: 5rem;
 }
 
 body {
@@ -11,11 +14,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Rubik';
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+p {
+  color: var(--yellow);
+  font-size: var(--font-size-md);
+  text-align: justify;
 }
 
 tr {
