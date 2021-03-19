@@ -33,12 +33,12 @@ function transformToTableData(data, fields) {
 /** Renders a table component
  * @return {node}
  */
-export default function Table({ data, fields }) {
+export default function Table({ data: initialData, fields }) {
+  const [data, setData] = useState(initialData);
   const [sortBy, setSortBy] = useState(SORT_BY_DEFAULT);
   const [sortByDirection, setSortByDirection] = useState(
       SORT_BY_DIRECTION_DEFAULT,
   );
-  const [tableData, setTableData] = useState([]);
 
   const tableHeaders = useMemo(
       () => fields || Object.keys(data && data[0] ? data[0] : {}),
@@ -46,7 +46,10 @@ export default function Table({ data, fields }) {
   );
 
   const transformedTableData = useMemo(
-      () => transformToTableData(data, tableHeaders),
+      () => {
+        console.log('SETTING', {data});
+        return transformToTableData(data, tableHeaders);
+      },
       [data, tableHeaders],
   );
 
@@ -55,11 +58,25 @@ export default function Table({ data, fields }) {
   }, [sortBy]);
 
   useEffect(() => {
-    setTableData(transformedTableData);
-  }, []);
+    data.sort(
+        (a, b) => {
+          let valA = a[sortBy];
+          let valB = b[sortBy];
 
-  useEffect(() => {
-    // sort the data by parameter and direction
+          valA = isNaN(valA) ? valA : parseFloat(valA);
+          valB = isNaN(valB) ? valB : parseFloat(valB);
+
+          if (valA < valB) {
+            return sortByDirection === ASCENDING ? -1 : 1;
+          };
+          if (valA > valB) {
+            return sortByDirection === ASCENDING ? 1 : -1;
+          };
+          return 0;
+        },
+    );
+    console.log({data});
+    setData([...data]);
   }, [sortBy, sortByDirection]);
 
   // On table head click, toggle the direction of the sort or set the
@@ -72,7 +89,7 @@ export default function Table({ data, fields }) {
             ASCENDING,
       ) :
       setSortBy(value);
-  }, []);
+  }, [sortBy, sortByDirection]);
 
   return (
     <table className="table">
@@ -89,7 +106,7 @@ export default function Table({ data, fields }) {
         </tr>
       </thead>
       <tbody>
-        {tableData.map(
+        {transformedTableData.map(
             (rowData, index) => <TableRow rowData={rowData} key={index} />,
         )}
       </tbody>

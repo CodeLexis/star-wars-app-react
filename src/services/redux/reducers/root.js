@@ -2,6 +2,7 @@ import {
   ON_API_CALL_FAILURE,
   ON_API_CALL_SUCCESS,
   SET_CURRENT_STAR_WARS_MOVIE,
+  SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS,
   SET_IS_LOADING,
   SET_STAR_WARS_MOVIE_LIST,
 } from '../action-types';
@@ -9,6 +10,7 @@ import {
 
 const initialState = {
   currentStarWarsMovie: null,
+  currentStarWarsMovieCharacters: null,
   didErrorOccurWhileFetching: true,
   isLoading: false,
   starWarsMovies: null,
@@ -51,6 +53,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         starWarsMovies: action.payload,
+      };
+    case SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS:
+      return {
+        ...state,
+        currentStarWarsMovieCharacters: action.payload,
       };
 
     default:

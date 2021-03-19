@@ -6,15 +6,15 @@ import PropTypes from 'prop-types';
 import './App.css';
 
 import Home from './pages/Home';
-import { retrieveMovieDetails } from './services/redux/thunks';
+import { retrieveAllStarWarsMovies } from './services/redux/thunks';
 
 
 /** App
  * @return {node}
  */
-function App({retrieveMovieDetails}) {
+function App({retrieveAllStarWarsMovies}) {
   useEffect(() => {
-    retrieveMovieDetails();
+    retrieveAllStarWarsMovies();
   }, []);
 
   return <Home />;
@@ -26,12 +26,12 @@ function App({retrieveMovieDetails}) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    retrieveMovieDetails: () => dispatch(retrieveMovieDetails()),
+    retrieveAllStarWarsMovies: () => dispatch(retrieveAllStarWarsMovies()),
   };
 }
 
 App.propTypes = {
-  retrieveMovieDetails: PropTypes.func,
+  retrieveAllStarWarsMovies: PropTypes.func,
 };
 
 export default connect(null, mapDispatchToProps)(App);

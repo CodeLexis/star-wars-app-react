@@ -1,55 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Table from '../components/Table';
-import { withSkeleton } from '../components/hocs';
+import { withErrorBoundary, withSkeleton } from '../components/hocs';
 import { setCurrentStarWarsMovie } from '../services/redux/actions';
 import OpeningScroll from '../components/OpeningScroll';
-import {
-  fetchMovieCharacters,
-  fetchUrlResource,
-} from '../services/redux/thunks';
-
+import { fetchMovieCharacters } from '../services/redux/thunks';
 
 /** Renders the home page
  * @param {Object} props
  * @return {node}
  */
 function Home({
-  currentStarWarsMovie, fetchMovieCharacters, setCurrentStarWarsMovie,
-  starWarsMovies, urlContent,
+  currentStarWarsMovie, currentStarWarsMovieCharacters, fetchMovieCharacters,
+  setCurrentStarWarsMovie, starWarsMovies, urlContent,
 }) {
   useEffect(() => {
-    console.log({currentStarWarsMovie});
+    if (!currentStarWarsMovie) return;
 
     fetchMovieCharacters(currentStarWarsMovie);
-
-    // When all the characters have been fetched, display them on the table.
   }, [currentStarWarsMovie]);
 
-  useEffect(() => {
-    console.log({currentStarWarsMovie, urlContent});
-    let isAllClear = false;
-    let didErrorOccur = false;
-
-    currentStarWarsMovie?.characters.map(
-        (value) => {
-          const [urlPath] = value.split('http://swapi.dev/api/').reverse();
-          isAllClear = Boolean(urlContent[urlPath]?.content);
-          didErrorOccur = (
-            didErrorOccur || Boolean(
-                urlContent[urlPath]?.didErrorOccurWhileFetching,
-            )
-          );
-        },
+  const StarWarsTable = useMemo(() => {
+    return withErrorBoundary(
+        Table,
+        urlContent.didErrorOccurWhileFetching,
+        urlContent.isLoading,
+        () => fetchMovieCharacters(currentStarWarsMovie),
     );
-
-    if (isAllClear) {
-      console.log('YAAAAY!!!');
-    }
-  }, [currentStarWarsMovie, urlContent]);
+  }, [
+    currentStarWarsMovie,
+    urlContent.didErrorOccurWhileFetching,
+    urlContent.isLoading,
+    fetchMovieCharacters,
+  ]);
 
   return <div id="app-container">
     <select onChange={(event) => setCurrentStarWarsMovie(event.target.value)}>
@@ -64,8 +50,9 @@ function Home({
 
     <OpeningScroll />
 
-    <Table
-      data={[]}
+    <StarWarsTable
+      fields={['name', 'gender', 'height']}
+      data={currentStarWarsMovieCharacters || []}
     />
   </div>;
 }
@@ -73,8 +60,8 @@ function Home({
 
 Home.propTypes = {
   currentStarWarsMovie: PropTypes.object,
+  currentStarWarsMovieCharacters: PropTypes.any,
   fetchMovieCharacters: PropTypes.func,
-  fetchUrlResource: PropTypes.func,
   setCurrentStarWarsMovie: PropTypes.func,
   starWarsMovies: PropTypes.array,
   urlContent: PropTypes.array,
@@ -87,6 +74,7 @@ Home.propTypes = {
 function mapStateToProps(state) {
   return {
     currentStarWarsMovie: state.root.currentStarWarsMovie,
+    currentStarWarsMovieCharacters: state.root.currentStarWarsMovieCharacters,
     starWarsMovies: state.root.starWarsMovies,
     urlContent: state.urlContent,
   };
@@ -99,8 +87,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchMovieCharacters: (url) => dispatch(fetchMovieCharacters(url)),
-    fetchUrlResource: (url) => dispatch(fetchUrlResource(url)),
-    retrieveMovieDetails: () => dispatch(retrieveMovieDetails()),
+    retrieveAllStarWarsMovies: () => dispatch(retrieveAllStarWarsMovies()),
     setCurrentStarWarsMovie: (episodeId) => dispatch(
         setCurrentStarWarsMovie(episodeId),
     ),
@@ -108,5 +95,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-    withSkeleton(Home, 'root.isLoading'),
+    withSkeleton(
+        Home,
+        () => <strong style={{color: 'whitesmoke'}}>SKELETON</strong>,
+        'root.isLoading',
+    ),
 );

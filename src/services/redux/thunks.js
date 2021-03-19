@@ -3,17 +3,21 @@ import { ERROR_STATUS } from '../api/constants';
 import {
   onApiCallFailure,
   onApiCallSuccess,
+  onFetchMovieCharactersSuccess,
+  setCurrentMovieCharacters,
   setIsLoading,
   setStarWarsMovieList,
   setUrlResourceIsLoading,
   setUrlResourceContent,
+  onFetchMovieCharactersStart,
+  onFetchMovieCharactersFailure,
 } from './actions';
 
 
 /** Retrieves all star wars films and sets them to state
  * @return {function}
 */
-export function retrieveMovieDetails() {
+export function retrieveAllStarWarsMovies() {
   return async function(dispatch) {
     dispatch(setIsLoading(true));
 
@@ -32,6 +36,10 @@ export function retrieveMovieDetails() {
               response.results.sort((a, b) => a.release_date - b.release_date),
           ),
       );
+
+      // response.results.map((movie) => {
+      //   dispatch(fetchMovieCharacters(movie));
+      // });
       dispatch(onApiCallSuccess());
     } catch (error) {
       dispatch(onApiCallFailure());
@@ -46,14 +54,32 @@ export function retrieveMovieDetails() {
  * @return {function}
  */
 export function fetchMovieCharacters(movie) {
-  console.log({movie});
   return async function(dispatch, getState) {
-    movie?.characters?.map((value) => {
-      const urlPath = value.split('http://swapi.dev/api/')[1];
-      dispatch(fetchUrlResource(urlPath));
-      const { urlContent } = getState();
-      console.log('AFTER', {urlPath}, urlContent[urlPath]);
-    });
+    dispatch(onFetchMovieCharactersStart());
+
+    const promises = movie?.characters?.map((value) => new Promise(
+        async (resolve, reject) => {
+          const urlPath = value.split('http://swapi.dev/api/')[1];
+          await dispatch(fetchUrlResource(urlPath));
+          const { urlContent } = getState();
+
+          const thisUrlContent = urlContent[urlPath];
+          const wasFetchSuccessful = Boolean(thisUrlContent?.content);
+
+          if (wasFetchSuccessful) return resolve(thisUrlContent.content);
+          return reject(urlPath);
+        }),
+    );
+
+    Promise.all(promises).then(
+        (result) => {
+          dispatch(setCurrentMovieCharacters(result));
+          dispatch(onFetchMovieCharactersSuccess());
+        },
+        (error) => {
+          dispatch(onFetchMovieCharactersFailure(error));
+        },
+    );
   };
 }
 
@@ -62,12 +88,9 @@ export function fetchMovieCharacters(movie) {
  * @return {function}
  */
 export function fetchUrlResource(url) {
-  console.log({url});
   return async function(dispatch, getState) {
     const { urlContent } = getState();
     const cachedContent = urlContent[url];
-
-    console.log({cachedContent, url});
 
     if (cachedContent?.content) {
       return cachedContent.content;
@@ -84,6 +107,7 @@ export function fetchUrlResource(url) {
       }
 
       dispatch(setUrlResourceContent(response, url));
+      dispatch(setUrlResourceIsLoading(false, url));
       dispatch(onApiCallSuccess());
     } catch {
       dispatch(onApiCallFailure());

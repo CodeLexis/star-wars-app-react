@@ -19,30 +19,6 @@ export default function TableRow({rowData}) {
   );
 }
 
-/** An HOC around TableRow that's tailored towards the StarWars API
- * @param {(class|function)} WrappedComponent
- * @param {url} url
- * @param {Object} state
- * @param {function} dispatch
- * @return {node}
- */
-export function withStarWarsApiUrl(WrappedComponent, url, state, dispatch) {
-  const rowData = state[url];
-
-  // fetch the data for this url
-
-  return rowData.data ?
-    <WrappedComponent {...rowData} /> :
-    <React.Fragment />;
-}
-
 TableRow.propTypes = {
   rowData: PropTypes.array.isRequired,
 };
-
-export const StarWarsTableRow = (url, state, dispatch) => withStarWarsApiUrl(
-    TableRow,
-    url,
-    state,
-    dispatch,
-);
