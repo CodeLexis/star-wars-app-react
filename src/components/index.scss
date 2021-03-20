@@ -1,0 +1,64 @@
+@import '../constants/styles.scss';
+
+#star-wars-logo {
+  align-self: center;
+  display: flex;
+  max-height: 400px;
+  height: 100%;
+  margin: 0 auto;
+  transition: all;
+  animation: fadein 3.5s;
+
+  @media screen and (max-width: $screen-size-sm-end) {
+    height: 300px;
+  }
+}
+
+#opening-scroll {
+  display: flex;
+  height: 30rem;
+  justify-content: center;
+  overflow-y: hidden;
+  transition: all;
+  transition-duration: 1s;
+}
+
+#opening-scroll-content {
+  margin-top: 30rem;
+  height: 100%;
+  word-spacing: 0.4rem;
+  line-height: 3.2rem;
+  width: 40%;
+
+  animation: fadein 1s;
+  transition: all;
+  transition-duration: 1s;
+
+  @media screen and (max-width: $screen-size-sm-end) {
+    line-height: 2.5rem;
+    width: 100%;
+  }
+}
+
+.opening-scroll__text {
+  color: var(--yellow);
+  font-weight: 900;
+}
+
+.opening-scroll__h1 {
+  font-size: var(--font-size-xl);
+  font-family: 'Source Sans Pro';
+  line-height: 4rem;
+  margin-top: 0rem;
+  margin-bottom: 4.5rem;
+  text-transform: uppercase;
+}
+
+.opening-scroll__heading {
+  text-align: center;
+}
+
+.skeleton {
+  animation: fadeinout 2s infinite;
+  background-color: var(--grey-darker);
+}

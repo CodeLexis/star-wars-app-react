@@ -34,3 +34,37 @@ ArrowUpIcon.propTypes = {
   colour: PropTypes.string,
   size: PropTypes.number,
 };
+
+/** Renders a female icon
+ * @param {string} colour
+ * @return {node}
+ */
+export function FemaleIcon({colour, size}) {
+  return (
+    <img
+      src={`https://img.icons8.com/ios-glyphs/${size}/${colour}/female.png`}
+    />
+  );
+}
+
+FemaleIcon.propTypes = {
+  colour: PropTypes.string,
+  size: PropTypes.number,
+};
+
+/** Renders a male icon
+ * @param {string} colour
+ * @return {node}
+ */
+export function MaleIcon({colour, size}) {
+  return (
+    <img
+      src={`https://img.icons8.com/ios-glyphs/${size}/${colour}/male.png`}
+    />
+  );
+}
+
+MaleIcon.propTypes = {
+  colour: PropTypes.string,
+  size: PropTypes.number,
+};

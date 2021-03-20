@@ -1,4 +1,8 @@
 import {
+  convertCentimetresToFeet,
+  convertCentimetresToInches,
+} from '../../../utils/converters';
+import {
   ON_API_CALL_FAILURE,
   ON_API_CALL_SUCCESS,
   SET_CURRENT_STAR_WARS_MOVIE,
@@ -57,12 +61,33 @@ export default function rootReducer(state = initialState, action) {
     case UPDATE_MOVIE_DETAIL:
       const { currentStarWarsMovie, starWarsMovies } = state;
 
+      const otherParamsToBeUpdated = {};
+
+      if (action.param === 'characters') {
+        let characterHeightSum = 0;
+
+        action.payload.forEach(
+            (a) => characterHeightSum += (
+              !isNaN(a.height) ? parseInt(a.height) : 0
+            ),
+        );
+
+        otherParamsToBeUpdated.characterHeightSum = (
+          `${characterHeightSum}cm ` +
+          `(${convertCentimetresToFeet(characterHeightSum)}ft/` +
+          `${convertCentimetresToInches(characterHeightSum)}in)`
+        );
+
+        // modify otherParamsToBeUpdated as required
+      }
+
       const updatedStarWarsMovies = starWarsMovies.map((value) => {
         if (value.episode_id != action.movieId) return value;
 
         return {
           ...value,
           [action.param]: action.payload,
+          ...otherParamsToBeUpdated,
         };
       });
 

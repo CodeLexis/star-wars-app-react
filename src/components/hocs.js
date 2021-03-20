@@ -64,6 +64,7 @@ export function withUrl(WrappedComponent, isLoadingAddr) {
 
 /** An HOC function for Components with skeletons
  * @param {(class|function)} WrappedComponent
+ * @param {(class|function)} WrappedComponentSkeleton
  * @param {boolean} didErrorOccur
  * @param {boolean} isLoading
  * @param {function} retryFunction
@@ -71,11 +72,12 @@ export function withUrl(WrappedComponent, isLoadingAddr) {
  * @return {node}
  */
 export function withErrorBoundary(
-    WrappedComponent, didErrorOccur, isLoading, retryFunction,
+    WrappedComponent, WrappedComponentSkeleton, didErrorOccur, isLoading,
+    retryFunction,
 ) {
   return function WithErrorBoundaryComponent(props) {
     if (isLoading) {
-      return <strong style={{color: 'white'}}>LOADING</strong>;
+      return <WrappedComponentSkeleton />;
     }
 
     if (didErrorOccur) {

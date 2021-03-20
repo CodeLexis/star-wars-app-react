@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Text from './Text';
+
+import './index.scss';
 
 
 /** Renders a scroll
@@ -10,11 +12,28 @@ import Text from './Text';
  * @return {node}
  */
 function OpeningScroll({currentStarWarsMovie}) {
+  const scrollRef = useRef();
+
+  const pageScroll = useCallback(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollTop + 1;
+
+    setTimeout(pageScroll, 50);
+  });
+
+  useEffect(() => {
+    if (!scrollRef?.current) return;
+    // When another movie is selected, restart the scroll.
+    scrollRef.current.scrollTop = 0;
+
+    console.log('TAPPING...');
+    setTimeout(pageScroll, 1200);
+  }, [currentStarWarsMovie?.episode_id]);
+
   return (
-    <div className="opening-scroll">
+    <div id="opening-scroll" className="animated" ref={scrollRef}>
       {
         Boolean(currentStarWarsMovie) ?
-          <React.Fragment>
+          <div id="opening-scroll-content">
             <Text className="opening-scroll__heading opening-scroll__text">
               EPISODE {currentStarWarsMovie.episode_id}
             </Text>
@@ -27,11 +46,12 @@ function OpeningScroll({currentStarWarsMovie}) {
             <Text className="opening-scroll__text">
               {currentStarWarsMovie.opening_crawl}
             </Text>
-          </React.Fragment> :
+          </div> :
           <img
             alt="star-wars-logo"
+            className="animated"
             id="star-wars-logo"
-            src="https://img.icons8.com/ios/256/FFE81F/star-wars.png"
+            src="https://img.icons8.com/ios/512/FFE81F/star-wars.png"
           />
       }
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,6 +9,13 @@ import { setCurrentStarWarsMovie } from '../services/redux/actions';
 import OpeningScroll from '../components/OpeningScroll';
 import { fetchMovieCharacters } from '../services/redux/thunks';
 
+import './style.scss';
+import Skeleton from '../components/Skeleton';
+import Text from '../components/Text';
+
+const audio = new Audio('./star-wars-theme.mp3');
+audio.volume = 0.2;
+
 /** Renders the home page
  * @param {Object} props
  * @return {node}
@@ -17,28 +24,41 @@ function Home({
   currentStarWarsMovie, fetchMovieCharacters, setCurrentStarWarsMovie,
   starWarsMovies, urlContent,
 }) {
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
   useEffect(() => {
     if (!currentStarWarsMovie) return;
 
+    if (!isPlayingAudio) {
+      audio.play();
+      setIsPlayingAudio(true);
+    }
     fetchMovieCharacters(currentStarWarsMovie);
   }, [currentStarWarsMovie?.episode_id]);
 
   const StarWarsTable = useMemo(() => {
     return withErrorBoundary(
         Table,
+        () => <Skeleton height={'50rem'} width={'100%'} />,
         urlContent.didErrorOccurWhileFetching,
         urlContent.isLoading,
         () => fetchMovieCharacters(currentStarWarsMovie),
     );
   }, [
-    currentStarWarsMovie,
+    currentStarWarsMovie?.characters,
     urlContent.didErrorOccurWhileFetching,
     urlContent.isLoading,
-    fetchMovieCharacters,
   ]);
 
   return <div id="app-container">
-    <select onChange={(event) => setCurrentStarWarsMovie(event.target.value)}>
+    <label id="star-wars-movie-select-label" htmlFor="star-wars-movie-select">
+      Select a Star Wars movie:
+    </label>
+    <select
+      id="star-wars-movie-select"
+      onChange={(event) => setCurrentStarWarsMovie(event.target.value)}
+    >
+      <option />
       {starWarsMovies?.map(
           ({title, episode_id: episodeId}, index) => (
             <option key={index} value={episodeId}>
@@ -50,13 +70,39 @@ function Home({
 
     <OpeningScroll />
 
-    <StarWarsTable
+    {currentStarWarsMovie && <StarWarsTable
       fields={['name', 'gender', 'height']}
-      data={currentStarWarsMovie?.characters || []}
-    />
+      footer={() => <Text>{currentStarWarsMovie.characterHeightSum}</Text>}
+      data={currentStarWarsMovie.characters}
+    />}
   </div>;
 }
 
+/** Renders the home skeleton
+ * @param {Object} props
+ * @return {node}
+*/
+function HomeSkeleton(props) {
+  return (
+
+    <div id="app-container-skeleton">
+      <Skeleton
+        height={'3rem'}
+        maxWidth={'30ch'}
+        minWidth={'15ch'}
+        width={'100%'}
+      />
+      <Skeleton
+        height={'25rem'}
+        width={'100%'}
+      />
+      <Skeleton
+        height={'25rem'}
+        width={'100%'}
+      />
+    </div>
+  );
+}
 
 Home.propTypes = {
   currentStarWarsMovie: PropTypes.object,
@@ -96,7 +142,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
     withSkeleton(
         Home,
-        () => <strong style={{color: 'whitesmoke'}}>SKELETON</strong>,
+        HomeSkeleton,
         'root.isLoading',
     ),
 );

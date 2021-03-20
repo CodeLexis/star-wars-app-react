@@ -8,6 +8,7 @@ import TableHead from './TableHead';
 import TableRow from './TableRow';
 
 import './style.css';
+import { FemaleIcon, MaleIcon } from '../Icons';
 
 
 const SORT_BY_DEFAULT = null;
@@ -23,6 +24,15 @@ function transformToTableData(data, fields) {
   return data.map(
       (item) => fields.map(
           (value) => {
+            if (value == 'gender') {
+              if (item[value] == 'female') {
+                return <FemaleIcon colour={'FFE81F'} />;
+              } else if (item[value] == 'male') {
+                return <MaleIcon colour={'FFE81F'} />;
+              } else {
+                return '--';
+              }
+            }
             return item[value];
           },
       ),
@@ -33,7 +43,7 @@ function transformToTableData(data, fields) {
 /** Renders a table component
  * @return {node}
  */
-export default function Table({ data: initialData, fields }) {
+export default function Table({ data: initialData, fields, footer }) {
   const [data, setData] = useState(initialData);
   const [sortBy, setSortBy] = useState(SORT_BY_DEFAULT);
   const [sortByDirection, setSortByDirection] = useState(
@@ -111,11 +121,15 @@ export default function Table({ data: initialData, fields }) {
             (rowData, index) => <TableRow rowData={rowData} key={index} />,
         )}
       </tbody>
+      <tfoot>
+        {footer()}
+      </tfoot>
     </table>
   );
 }
 
 Table.propTypes = {
   data: PropTypes.array.isRequired,
+  footer: PropTypes.node,
   fields: PropTypes.array,
 };

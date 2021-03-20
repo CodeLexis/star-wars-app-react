@@ -1,3 +1,13 @@
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+  transition-timing-function: ease-in-out;
+}
+
 #app-container {
   background-color: var(--black);
   display: flex;
@@ -6,31 +16,26 @@
   padding: 2rem;
 }
 
-#star-wars-logo {
-  align-self: center;
-  margin: 0 auto;
-  /* justify-self: center; */
+#app-container-skeleton {
+  background-color: var(--black);
+  display: grid;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 2rem;
 }
 
-.opening-scroll {
-  height: 20rem;
-  overflow-y: scroll;
+.unmarked-link {
+  color: var(--grey-light);
+  text-decoration: underline;
 }
 
-.opening-scroll__text {
-  color: var(--yellow);
-  font-weight: 900;
+.unmarked-link:focus {
+  color: inherit;
+  text-decoration: none;
 }
 
-.opening-scroll__h1 {
-  font-size: var(--font-size-xl);
-  font-family: 'Source Sans Pro';
-  line-height: 4rem;
-  margin-top: 0rem;
-  margin-bottom: 4.5rem;
-  text-transform: uppercase;
-}
-
-.opening-scroll__heading {
-  text-align: center;
+.unmarked-link:hover {
+  color: inherit;
+  text-decoration: none;
 }
