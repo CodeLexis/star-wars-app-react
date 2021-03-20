@@ -14,14 +14,14 @@ import { fetchMovieCharacters } from '../services/redux/thunks';
  * @return {node}
  */
 function Home({
-  currentStarWarsMovie, currentStarWarsMovieCharacters, fetchMovieCharacters,
-  setCurrentStarWarsMovie, starWarsMovies, urlContent,
+  currentStarWarsMovie, fetchMovieCharacters, setCurrentStarWarsMovie,
+  starWarsMovies, urlContent,
 }) {
   useEffect(() => {
     if (!currentStarWarsMovie) return;
 
     fetchMovieCharacters(currentStarWarsMovie);
-  }, [currentStarWarsMovie]);
+  }, [currentStarWarsMovie?.episode_id]);
 
   const StarWarsTable = useMemo(() => {
     return withErrorBoundary(
@@ -52,7 +52,7 @@ function Home({
 
     <StarWarsTable
       fields={['name', 'gender', 'height']}
-      data={currentStarWarsMovieCharacters || []}
+      data={currentStarWarsMovie?.characters || []}
     />
   </div>;
 }
@@ -60,7 +60,6 @@ function Home({
 
 Home.propTypes = {
   currentStarWarsMovie: PropTypes.object,
-  currentStarWarsMovieCharacters: PropTypes.any,
   fetchMovieCharacters: PropTypes.func,
   setCurrentStarWarsMovie: PropTypes.func,
   starWarsMovies: PropTypes.array,

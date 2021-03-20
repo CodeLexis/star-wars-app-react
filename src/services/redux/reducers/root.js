@@ -2,9 +2,9 @@ import {
   ON_API_CALL_FAILURE,
   ON_API_CALL_SUCCESS,
   SET_CURRENT_STAR_WARS_MOVIE,
-  SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS,
   SET_IS_LOADING,
   SET_STAR_WARS_MOVIE_LIST,
+  UPDATE_MOVIE_DETAIL,
 } from '../action-types';
 
 
@@ -54,10 +54,30 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         starWarsMovies: action.payload,
       };
-    case SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS:
+    case UPDATE_MOVIE_DETAIL:
+      const { currentStarWarsMovie, starWarsMovies } = state;
+
+      const updatedStarWarsMovies = starWarsMovies.map((value) => {
+        if (value.episode_id != action.movieId) return value;
+
+        return {
+          ...value,
+          [action.param]: action.payload,
+        };
+      });
+
       return {
         ...state,
-        currentStarWarsMovieCharacters: action.payload,
+        starWarsMovies: updatedStarWarsMovies,
+
+        // update the currentStarWarsMovie if it is the movie in context
+        ...(
+          currentStarWarsMovie.episode_id == action.movieId ?
+            {currentStarWarsMovie: updatedStarWarsMovies.find(
+                ({episode_id: episodeId}) => episodeId == action.movieId,
+            )} :
+          {}
+        ),
       };
 
     default:

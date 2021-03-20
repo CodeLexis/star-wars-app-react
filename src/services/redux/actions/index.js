@@ -5,11 +5,11 @@ import {
   ON_FETCH_MOVIE_CHARACTERS_START,
   ON_FETCH_MOVIE_CHARACTERS_SUCCESS,
   SET_CURRENT_STAR_WARS_MOVIE,
-  SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS,
   SET_IS_LOADING,
   SET_STAR_WARS_MOVIE_LIST,
   SET_URL_RESOURCE_CONTENT,
   SET_URL_RESOURCE_IS_LOADING,
+  UPDATE_MOVIE_DETAIL,
 } from '../action-types';
 
 
@@ -125,13 +125,17 @@ export function onFetchMovieCharactersSuccess() {
   };
 }
 
-/** Sets current movie characters to Redux state
- * @param {Array} characters
+/** Updates the detail of a movie
+ * @param {(string|number)} movieId
+ * @param {string} param
+ * @param {string} value
  * @return {Object}
- */
-export function setCurrentMovieCharacters(characters) {
+*/
+export function updateMovieDetail(movieId, param, value) {
   return {
-    type: SET_CURRENT_STAR_WARS_MOVIE_CHARACTERS,
-    payload: characters,
+    type: UPDATE_MOVIE_DETAIL,
+    movieId,
+    param,
+    payload: value,
   };
 }

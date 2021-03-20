@@ -4,13 +4,13 @@ import {
   onApiCallFailure,
   onApiCallSuccess,
   onFetchMovieCharactersSuccess,
-  setCurrentMovieCharacters,
   setIsLoading,
   setStarWarsMovieList,
   setUrlResourceIsLoading,
   setUrlResourceContent,
   onFetchMovieCharactersStart,
   onFetchMovieCharactersFailure,
+  updateMovieDetail,
 } from './actions';
 
 
@@ -59,6 +59,8 @@ export function fetchMovieCharacters(movie) {
 
     const promises = movie?.characters?.map((value) => new Promise(
         async (resolve, reject) => {
+          if (typeof value === 'object') return resolve(value);
+
           const urlPath = value.split('http://swapi.dev/api/')[1];
           await dispatch(fetchUrlResource(urlPath));
           const { urlContent } = getState();
@@ -75,8 +77,7 @@ export function fetchMovieCharacters(movie) {
         (result) => {
           // TODO refactor this to set the edit the movie payload and add
           // these characters
-          dispatch(setCurrentMovieCharacters(result));
-          // dispatch(setMovieCharacters(result));
+          dispatch(updateMovieDetail(movie?.episode_id, 'characters', result));
           dispatch(onFetchMovieCharactersSuccess());
         },
         (error) => {
@@ -99,7 +100,7 @@ export function fetchUrlResource(url) {
       return cachedContent.content;
     }
 
-    dispatch(setIsLoading(true, url));
+    // dispatch(setIsLoading(true, url));
     dispatch(setUrlResourceIsLoading(true, url));
 
     try {
@@ -117,6 +118,6 @@ export function fetchUrlResource(url) {
       dispatch(onApiCallFailure());
     }
 
-    dispatch(setIsLoading(false, url));
+    // dispatch(setIsLoading(false, url));
   };
 }
