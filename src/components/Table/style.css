@@ -32,12 +32,21 @@
   background-color: #656565;
 }
 
+.table-head--active {
+  background-color: #ffffff80;
+}
+
+.table-head__icon {
+  margin-right: 0.7rem;
+}
+
 .table-row {
   border-bottom: 0.002rem solid #a0a0a0;
 }
 
 #table-head-container {
-  border-bottom: 0.1rem solid #a0a0a0;
+  /* border-bottom: 0.1rem solid #a0a0a0; */
+  margin-bottom: 0.5rem;
   display: flex;
   flex-direction: row;
 }

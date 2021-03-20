@@ -73,7 +73,10 @@ export function fetchMovieCharacters(movie) {
 
     Promise.all(promises).then(
         (result) => {
+          // TODO refactor this to set the edit the movie payload and add
+          // these characters
           dispatch(setCurrentMovieCharacters(result));
+          // dispatch(setMovieCharacters(result));
           dispatch(onFetchMovieCharactersSuccess());
         },
         (error) => {
@@ -96,6 +99,7 @@ export function fetchUrlResource(url) {
       return cachedContent.content;
     }
 
+    dispatch(setIsLoading(true, url));
     dispatch(setUrlResourceIsLoading(true, url));
 
     try {

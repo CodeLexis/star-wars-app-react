@@ -97,6 +97,7 @@ export default function Table({ data: initialData, fields }) {
         <tr>
           {tableHeaders.map(
               (value, index) => <TableHead
+                isActive={sortBy === value}
                 key={index}
                 onClick={() => onTableHeadClick(value)}
                 sortByDirection={sortByDirection}

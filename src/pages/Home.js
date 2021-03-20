@@ -86,7 +86,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMovieCharacters: (url) => dispatch(fetchMovieCharacters(url)),
+    fetchMovieCharacters: (movie) => dispatch(fetchMovieCharacters(movie)),
     retrieveAllStarWarsMovies: () => dispatch(retrieveAllStarWarsMovies()),
     setCurrentStarWarsMovie: (episodeId) => dispatch(
         setCurrentStarWarsMovie(episodeId),
