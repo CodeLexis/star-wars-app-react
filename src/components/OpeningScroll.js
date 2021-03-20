@@ -15,6 +15,7 @@ function OpeningScroll({currentStarWarsMovie}) {
   const scrollRef = useRef();
 
   const pageScroll = useCallback(() => {
+    if (!scrollRef.current) return;
     scrollRef.current.scrollTop = scrollRef.current.scrollTop + 1;
 
     setTimeout(pageScroll, 50);
@@ -25,7 +26,7 @@ function OpeningScroll({currentStarWarsMovie}) {
     // When another movie is selected, restart the scroll.
     scrollRef.current.scrollTop = 0;
 
-    console.log('TAPPING...');
+    console.log('TAPPING.. .');
     setTimeout(pageScroll, 1200);
   }, [currentStarWarsMovie?.episode_id]);
 

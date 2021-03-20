@@ -45,7 +45,7 @@ function Home({
         () => fetchMovieCharacters(currentStarWarsMovie),
     );
   }, [
-    currentStarWarsMovie?.characters,
+    currentStarWarsMovie?.characterHeightSum,
     urlContent.didErrorOccurWhileFetching,
     urlContent.isLoading,
   ]);
@@ -71,9 +71,9 @@ function Home({
     <OpeningScroll />
 
     {currentStarWarsMovie && <StarWarsTable
+      data={currentStarWarsMovie.characters}
       fields={['name', 'gender', 'height']}
       footer={() => <Text>{currentStarWarsMovie.characterHeightSum}</Text>}
-      data={currentStarWarsMovie.characters}
     />}
   </div>;
 }
