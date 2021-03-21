@@ -6,12 +6,15 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './services/redux/store';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 ReactDOM.render(
     <Provider store={store}>
       <React.StrictMode>
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </React.StrictMode>
     </Provider>,
     document.getElementById('root'),
