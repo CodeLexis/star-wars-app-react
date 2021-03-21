@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import store from '../services/redux/store';
-import Text from './Text';
+import ErrorBoundary from './ErrorBoundary';
 
 
 /** An HOC function for Components with skeletons
@@ -80,10 +80,7 @@ export function withErrorBoundary(
     if (isLoading) {
       return <WrappedComponentSkeleton />;
     } else if (didErrorOccur) {
-      return <div className="error-boundary-container">
-        <Text>Something went wrong</Text>
-        <button onClick={retryFunction}>RETRY</button>
-      </div>;
+      return <ErrorBoundary retryFunction={retryFunction} />;
     }
 
     return <WrappedComponent {...props} />;
