@@ -15,7 +15,7 @@ import {
 const initialState = {
   currentStarWarsMovie: null,
   currentStarWarsMovieCharacters: null,
-  didErrorOccurWhileFetching: true,
+  didErrorOccurWhileFetching: false,
   isLoading: false,
   starWarsMovies: null,
   urlContent: null,

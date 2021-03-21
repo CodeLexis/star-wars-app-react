@@ -50,6 +50,18 @@ body {
   font-family: 'Rubik';
 }
 
+button {
+  background-color: var(--yellow);
+  border-radius: 0.2rem;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 1rem;
+  width: 100%;
+  min-width: 15ch;
+  max-width: 30ch;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Table from '../components/Table';
-import { withErrorBoundary, withSkeleton } from '../components/hocs';
+import { withErrorBoundary } from '../components/hocs';
 import { setCurrentStarWarsMovie } from '../services/redux/actions';
 import OpeningScroll from '../components/OpeningScroll';
 import { fetchMovieCharacters } from '../services/redux/thunks';
@@ -15,6 +15,7 @@ import Text from '../components/Text';
 
 const audio = new Audio('./star-wars-theme.mp3');
 audio.volume = 0.2;
+
 
 /** Renders the home page
  * @param {Object} props
@@ -82,7 +83,7 @@ function Home({
  * @param {Object} props
  * @return {node}
 */
-function HomeSkeleton(props) {
+export function HomeSkeleton(props) {
   return (
 
     <div id="app-container-skeleton">
@@ -109,7 +110,7 @@ Home.propTypes = {
   fetchMovieCharacters: PropTypes.func,
   setCurrentStarWarsMovie: PropTypes.func,
   starWarsMovies: PropTypes.array,
-  urlContent: PropTypes.array,
+  urlContent: PropTypes.object,
 };
 
 /** Maps the redux-state to props
@@ -139,10 +140,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    withSkeleton(
-        Home,
-        HomeSkeleton,
-        'root.isLoading',
-    ),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,5 +1,11 @@
 @import '../constants/styles.scss';
 
+.error-boundary-container {
+  background-color: var(--grey-darker);
+  color: var(--grey-lighter);
+  padding: 2rem;
+}
+
 #star-wars-logo {
   align-self: center;
   display: flex;

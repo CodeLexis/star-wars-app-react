@@ -26,6 +26,8 @@ export function retrieveAllStarWarsMovies() {
         await starWarsApiClient.getAllStarWarsFilms()
       );
 
+      dispatch(setIsLoading(false));
+
       if (status === ERROR_STATUS) {
         dispatch(onApiCallFailure());
         return;
@@ -37,15 +39,10 @@ export function retrieveAllStarWarsMovies() {
           ),
       );
 
-      // response.results.map((movie) => {
-      //   dispatch(fetchMovieCharacters(movie));
-      // });
       dispatch(onApiCallSuccess());
     } catch (error) {
       dispatch(onApiCallFailure());
     }
-
-    dispatch(setIsLoading(false));
   };
 }
 
@@ -89,9 +86,10 @@ export function fetchMovieCharacters(movie) {
 
 /** Retrieves a URL-based resource
  * @param {string} url
+ * @param {boolean} silent
  * @return {function}
  */
-export function fetchUrlResource(url) {
+export function fetchUrlResource(url, silent=false) {
   return async function(dispatch, getState) {
     const { urlContent } = getState();
     const cachedContent = urlContent[url];
@@ -107,17 +105,17 @@ export function fetchUrlResource(url) {
       const { response, status } = await starWarsApiClient.fetchResource(url);
 
       if (status === ERROR_STATUS) {
-        dispatch(onApiCallFailure());
+        !silent && dispatch(onApiCallFailure());
         return;
       }
 
       dispatch(setUrlResourceContent(response, url));
       dispatch(setUrlResourceIsLoading(false, url));
-      dispatch(onApiCallSuccess());
+      !silent && dispatch(onApiCallSuccess());
     } catch {
-      dispatch(onApiCallFailure());
+      !silent && dispatch(onApiCallFailure());
     }
 
-    // dispatch(setIsLoading(false, url));
+    !silent && dispatch(setIsLoading(false, url));
   };
 }
