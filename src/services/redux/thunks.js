@@ -59,7 +59,7 @@ export function fetchMovieCharacters(movie) {
           if (typeof value === 'object') return resolve(value);
 
           const urlPath = value.split('http://swapi.dev/api/')[1];
-          await dispatch(fetchUrlResource(urlPath));
+          await dispatch(fetchUrlResource(urlPath, true));
           const { urlContent } = getState();
 
           const thisUrlContent = urlContent[urlPath];
