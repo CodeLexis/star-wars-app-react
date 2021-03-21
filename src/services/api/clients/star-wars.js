@@ -27,7 +27,7 @@ export default class StarWarsApiClient {
     });
   }
 
-  /** Fetches the details of a person.
+  /** Fetches the details of a url.
    * @param {string} urlPath
    * @return {Promise}
    */
