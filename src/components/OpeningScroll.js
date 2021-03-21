@@ -26,7 +26,6 @@ function OpeningScroll({currentStarWarsMovie}) {
     // When another movie is selected, restart the scroll.
     scrollRef.current.scrollTop = 0;
 
-    console.log('TAPPING.. .');
     setTimeout(pageScroll, 1200);
   }, [currentStarWarsMovie?.episode_id]);
 
