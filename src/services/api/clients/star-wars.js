@@ -1,7 +1,7 @@
 import Requester from '../requester';
 
 
-const API_BASE_URL = 'https://swapi.dev/api';
+const API_BASE_URL = process.env.REACT_APP_SWAPI_BASE_URL;
 
 
 /** StarWarsApiClient */
