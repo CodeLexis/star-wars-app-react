@@ -43,7 +43,7 @@ function transformToTableData(data, fields) {
 /** Renders a table component
  * @return {node}
  */
-export default function Table({ data: initialData, fields, footer, title }) {
+export default function Table({ data: initialData, fields, footer }) {
   const [data, setData] = useState(initialData);
   const [sortBy, setSortBy] = useState(SORT_BY_DEFAULT);
   const [sortByDirection, setSortByDirection] = useState(
@@ -57,7 +57,6 @@ export default function Table({ data: initialData, fields, footer, title }) {
 
   const transformedTableData = useMemo(
       () => {
-        console.log('SETTING', {data});
         return transformToTableData(data, tableHeaders);
       },
       [data, tableHeaders],
@@ -85,7 +84,6 @@ export default function Table({ data: initialData, fields, footer, title }) {
           return 0;
         },
     );
-    console.log({data});
     setData([...data]);
   }, [sortBy, sortByDirection]);
 
@@ -103,7 +101,6 @@ export default function Table({ data: initialData, fields, footer, title }) {
 
   return (
     <table className="table">
-      <strong>{title}</strong>
       <thead id="table-head-container">
         <tr>
           {tableHeaders.map(
@@ -123,7 +120,11 @@ export default function Table({ data: initialData, fields, footer, title }) {
         )}
       </tbody>
       <tfoot>
-        {footer()}
+        <tr>
+          <td>
+            {footer()}
+          </td>
+        </tr>
       </tfoot>
     </table>
   );
@@ -131,7 +132,7 @@ export default function Table({ data: initialData, fields, footer, title }) {
 
 Table.propTypes = {
   data: PropTypes.array.isRequired,
-  footer: PropTypes.node,
+  footer: PropTypes.func,
   fields: PropTypes.array,
   title: PropTypes.string,
 };

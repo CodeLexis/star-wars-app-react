@@ -8,8 +8,6 @@ import PropTypes from 'prop-types';
  * @return {node}
 */
 export default function Text({children, className}) {
-  console.log({children});
-
   if (typeof children === 'string') {
     return children.split('\r\n\r\n').map((value, index) => (
       <p className={className} key={index}>{value}</p>
