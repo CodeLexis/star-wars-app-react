@@ -7,7 +7,7 @@ import { ASCENDING, DESCENDING } from '../../constants';
 import TableHead from './TableHead';
 import TableRow from './TableRow';
 
-import './style.css';
+import './style.scss';
 import { FemaleIcon, MaleIcon } from '../Icons';
 
 
@@ -121,7 +121,7 @@ export default function Table({ data: initialData, fields, footer }) {
       </tbody>
       <tfoot>
         <tr>
-          <td>
+          <td className='star-wars-table-footer-container'>
             {footer()}
           </td>
         </tr>

@@ -74,7 +74,12 @@ function Home({
     {currentStarWarsMovie && <StarWarsTable
       data={currentStarWarsMovie.characters}
       fields={['name', 'gender', 'height']}
-      footer={() => <Text>{currentStarWarsMovie.characterHeightSum}</Text>}
+      footer={() => <React.Fragment>
+        <Text fontSize={1}>
+          {currentStarWarsMovie.numberOfCharacters} characters
+        </Text>
+        <Text fontSize={1}>{currentStarWarsMovie.characterHeightSum}</Text>
+      </React.Fragment>}
     />}
   </div>;
 }

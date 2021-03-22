@@ -78,6 +78,9 @@ export default function rootReducer(state = initialState, action) {
           `${convertCentimetresToInches(characterHeightSum)}in)`
         );
 
+        otherParamsToBeUpdated.numberOfCharacters = (
+          action.payload.length
+        );
         // modify otherParamsToBeUpdated as required
       }
 

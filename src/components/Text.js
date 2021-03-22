@@ -7,17 +7,29 @@ import PropTypes from 'prop-types';
  * @param {Object} props
  * @return {node}
 */
-export default function Text({children, className}) {
+export default function Text({children, className, fontSize}) {
   if (typeof children === 'string') {
     return children.split('\r\n\r\n').map((value, index) => (
-      <p className={className} key={index}>{value}</p>
+      <p
+        className={className}
+        key={index}
+        style={{fontSize: fontSize ? `${fontSize}rem` : undefined}}
+      >
+        {value}
+      </p>
     ));
   }
 
-  return <p className={className}>{children}</p>;
+  return <p
+    className={className}
+    style={{fontSize: fontSize ? `${fontSize}rem` : undefined}}
+  >
+    {children}
+  </p>;
 }
 
 Text.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string,
+  fontSize: PropTypes.number,
 };

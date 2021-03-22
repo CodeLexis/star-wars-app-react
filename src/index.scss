@@ -1,3 +1,5 @@
+@import './constants/styles.scss';
+
 :root {
   --black: #0E1111;
   --grey: #505050;
@@ -11,18 +13,8 @@
   --select-border: #777;
   --select-focus: blue;
   --select-arrow: var(--select-border);
-  
-  --screen-size-xs-start: 320px;
-  --screen-size-xs-end: 480px;
-  --screen-size-sm-start: 481px;
-  --screen-size-sm-end: 768px;
-  --screen-size-md-start: 769px;
-  --screen-size-md-end: 1024px;
-  --screen-size-lg-start: 1025px;
-  --screen-size-lg-end: 1200px;
-  --screen-size-xl-start: 1201px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: $screen-size-sm-end) {
     --font-size-md: 1.5rem;
     --font-size-lg: 2rem;
     --font-size-xl: 4rem;
